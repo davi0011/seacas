@@ -461,36 +461,36 @@ class TestMultiExodus(unittest.TestCase):
             ]
         self.assertListEqual([1, 1], elems)
 
-    # def test_multi_file_get_entity_count_nodal(self):
-    #     with exo.exodus(
-    #         [
-    #             os.path.join(self.input_dir, "AeB.e.3.0"),
-    #             os.path.join(self.input_dir, "AeB.e.3.1"),
-    #             os.path.join(self.input_dir, "AeB.e.3.2"),
-    #         ]
-    #     ) as temp_exofile:
-    #         elem_ids = temp_exofile.get_ids("EX_ELEM_BLOCK")
-    #         elems = temp_exofile.get_entity_count("EX_NODAL", elem_ids[0])
-    #     self.assertEqual(12, elems)
+    def test_multi_file_get_entity_count_nodal(self):
+        with exo.exodus(
+            [
+                os.path.join(self.input_dir, "AeB.e.3.0"),
+                os.path.join(self.input_dir, "AeB.e.3.1"),
+                os.path.join(self.input_dir, "AeB.e.3.2"),
+            ]
+        ) as temp_exofile:
+            elem_ids = temp_exofile.get_ids("EX_ELEM_BLOCK")
+            elems = temp_exofile.get_entity_count("EX_NODAL", elem_ids[0])
+        self.assertEqual(12, elems)
 
-    # def test_multi_get_elem_attr_values(self):
-    #     names = ["Scale", "Units"]
-    #     attrs = [[3.14159], [1]]
-    #     temp_copy = os.path.join(self.tempdir.name, "temp_copy.exo")
-    #     for filename in self.temp_exo_paths:
-    #         exo.copy_mesh(
-    #             filename, temp_copy, additionalElementAttributes=names
-    #         ).close()
-    #     with exo.exodus(temp_copy, mode="a") as temp_exofile:
-    #         for elem_id in temp_exofile.get_ids("EX_ELEM_BLOCK"):
-    #             for name, values in zip(names, attrs):
-    #                 temp_exofile.put_elem_attr_values(elem_id, name, values)
-    #             self.assertEqual(
-    #                 3.14159, temp_exofile.get_elem_attr_values(elem_id, "Scale")[0]
-    #             )
-    #             self.assertEqual(
-    #                 1.0, temp_exofile.get_elem_attr_values(elem_id, "Units")[0]
-                # )
+    def test_multi_get_elem_attr_values(self):
+        names = ["Scale", "Units"]
+        attrs = [[3.14159], [1]]
+        temp_copy = os.path.join(self.tempdir.name, "temp_copy.exo")
+        for filename in self.temp_exo_paths:
+            exo.copy_mesh(
+                filename, temp_copy, additionalElementAttributes=names
+            ).close()
+        with exo.exodus(temp_copy, mode="a") as temp_exofile:
+            for elem_id in temp_exofile.get_ids("EX_ELEM_BLOCK"):
+                for name, values in zip(names, attrs):
+                    temp_exofile.put_elem_attr_values(elem_id, name, values)
+                self.assertEqual(
+                    3.14159, temp_exofile.get_elem_attr_values(elem_id, "Scale")[0]
+                )
+                self.assertEqual(
+                    1.0, temp_exofile.get_elem_attr_values(elem_id, "Units")[0]
+                )
 
 
 @contextmanager
