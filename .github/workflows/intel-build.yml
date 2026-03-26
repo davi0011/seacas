@@ -39,6 +39,7 @@ jobs:
       uses: easimon/maximize-build-space@fc881a613ad2a34aca9c9624518214ebc21dfc0c # master
       with:
         root-reserve-mb: 30000
+        temp-reserve-mb: 20000
         remove-dotnet: 'true'
         remove-android: 'true'
         remove-haskell: 'true'
@@ -53,6 +54,15 @@ jobs:
         sudo apt-get update
     - name: install
       run: |
+        echo "OPT DEBUG"
+        ls -alh /opt/*
+        df -h /opt
+        sudo du --max-depth=1 -h /opt | sort -rh
+        echo "HOME DF"
+        sudo du --max-depth=1 -h ~ | sort -rh
+        df -h ~
+        sudo du -h /var/cache/apt/archives/
+        echo "STANDARD OUTPUT"
         sudo apt-get install -y intel-basekit
         sudo apt-get install -y intel-oneapi-common-vars
         sudo apt-get install -y intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic
@@ -106,6 +116,7 @@ jobs:
         uses: easimon/maximize-build-space@fc881a613ad2a34aca9c9624518214ebc21dfc0c # master
         with:
           root-reserve-mb: 30000
+          temp-reserve-mb: 20000
           remove-dotnet: 'true'
           remove-android: 'true'
           remove-haskell: 'true'
